@@ -8,10 +8,33 @@
  * Data: 03/006/2019 
  */
 
+// Inclue bibliotecas
 #include <Servo.h>
+#include <Ultrasonic.h>
+#include <DMPH.h>
 
+// Configura taxa de transmição do monitor serial.
 #define BAUND_RATE 9600
 
+// Configura sensor ultrasonic.
+#define TRIGGER_PIN 22
+#define ECHO_PIN 23
+Ultrasonic ultrasonic(TRIGGER_PIN, ECHO_PIN);
+
+// Configura pinos da Ponte H.
+#define N1 12
+#define N2 11
+#define ENA 13
+
+#define N3 10
+#define N4 9
+#define ENB 8
+
+// Cria objetos motor esquerdo e direito.
+DMPH motor_L(N1, N2, ENA);
+DMPH motor_R(N3, N4, ENB);
+
+// Cria objetos servos motores.
 Servo cabeca, ombro_L, ombro_R, braco_L, braco_R;
 
 // variaveis que irá armazenar as posições dos servos.
@@ -44,6 +67,8 @@ void setup()
 
 void loop()
 {
+  sonar();
+
   //move_cabeca_para_esquerda();
   //move_cabeca_para_direita();
 
@@ -51,6 +76,11 @@ void loop()
 
   //bye_bye_L();
   //bye_bye_R();
+
+  //frente();
+  //tras();
+  //esquerda();
+  //direita();
 }
 
 void move_cabeca_para_esquerda()
@@ -143,7 +173,6 @@ void bye_bye_L()
     braco_L.write(x);
     delay(6);
   }
-
 }
 
 void bye_bye_LS()
@@ -178,4 +207,53 @@ void bye_bye_RS()
   ombro_R.write(130);
   braco_R.write(45);
   braco_R.write(0);
+}
+
+void sonar()
+{
+  float distancia;
+  long microsec = ultrasonic.timing();
+  distancia = ultrasonic.convert(microsec, Ultrasonic::CM);
+
+  if (distancia < 10 && distancia > 0)
+  {
+    direita();
+    delay(900);
+    frente();
+    delay(2500);
+    esquerda();
+    delay(900);
+    parar();
+    delay(10000000);
+  }
+}
+
+void frente()
+{
+  motor_L.move(130);
+  motor_R.move(130);
+}
+
+void tras()
+{
+  motor_L.move(-255);
+  motor_R.move(-255);
+}
+
+void esquerda()
+{
+  motor_L.move(-200);
+  motor_R.move(200);
+}
+
+void direita()
+{
+  motor_L.move(200);
+  motor_R.move(-200);
+}
+
+void parar()
+{
+  motor_L.move(0);
+  motor_R.move(0);
 }
