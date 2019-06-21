@@ -1,7 +1,6 @@
 {
-    "board": "arduino:avr:mega",
+    "board": "arduino:avr:uno",
     "programmer": "AVRISP mkII",
-    "port": "/dev/ttyACM0",
-    "sketch": "firmware/2019/boneca1_tchau/boneca1_tchau.ino",
-    "configuration": "cpu=atmega2560"
+    "port": "/dev/ttyUSB0",
+    "sketch": "firmware/2018/boneca_2_principal/boneca_2_principal.ino"
 }
