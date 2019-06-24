@@ -2,17 +2,17 @@
 //Alunas: Wytala,  Maria Clara Pereira e Maria Clara Bezerra
 //Competição: Torneio Juvenil de Robótica
 //Modalidade: On stage
-/***********************************************************************************************/
+
 //Inclusão de bibliotecas
 #include <Ultrasonic.h>    //Biblioteca do sensor Ultrassônico
 #include <VarSpeedServo.h> //Biblioteca dos servos
-/***********************************************************************************************/
+
 //Definição da velocidade de comunicação
 #define BAUND_RATE 9600
-/***********************************************************************************************/
+
 //Criação dos objetos da biblioteca VarSpeedServo
 VarSpeedServo cabeca, ombro_L, ombro_R, braco_L, braco_R;
-/***********************************************************************************************/
+
 //Criação das variaveis que irá armazenar as posições dos servos
 int pos_cabeca;
 int pos_ombro_L;
@@ -20,14 +20,13 @@ int pos_ombro_R;
 int pos_mao_L;
 int pos_mao_R;
 
-/***********************************************************************************************/
 #define TRIGGER_PIN 8 //Definição do pino Trig que será ligado no pino 8 do Arduino
 #define ECHO_PIN 9    //Definição do pino Echo que será ligado no pino 9 do Arduino
-/***********************************************************************************************/
+
 float distancia; // Criação de váriavel que armazenar a distância
-/***********************************************************************************************/
+
 Ultrasonic ultrasonic(TRIGGER_PIN, ECHO_PIN); //Criação de objeto que se referencia a biblioteca
-/***********************************************************************************************/
+
 //Função de configuração
 void setup()
 {
@@ -40,27 +39,29 @@ void setup()
   braco_R.attach(6);
 
   // Define posição inicial dos servos.
-  cabeca.write(100); // cabeça reta para frente.
-  ombro_L.write(0);  // braço esquerdo para baixo.
-  braco_L.write(160);
-  ombro_R.write(160); // braço direito para baixo.
-  braco_R.write(10);
+  cabeca.write(70); // cabeça reta para frente.
+  
+  ombro_L.write(170);  // braço esquerdo para baixo.
+  braco_L.write(150);
+
+  ombro_R.write(10); // braço direito para baixo.
+  braco_R.write(20);
 
   delay(1000);
 }
-/***********************************************************************************************/
-//Função principal
+
+// Função principal.
 void loop()
 {
-  /***********************************************************************************************/
+
   //Função de leitura e conversão da distância
   long microsec = ultrasonic.timing();
   distancia = ultrasonic.convert(microsec, Ultrasonic::CM);
-  /***********************************************************************************************/
+
   //Serial.println(distancia);
   //delay(1000);
   //Condição de acionamento da boneca 2
-  if (distancia < 5 && distancia > 0)
+  if (distancia < 10 && distancia > 0)
   { //Se a distância for menor do 5cm
     delay(200);
     funcao1();
@@ -85,36 +86,40 @@ void loop()
     delay(2000);
 
     /* CHAMADA DE FUNÇÕES PARA TESTES*/
-    /*levantar_ombros_total_L_R() ;
-delay(1000);
-baixar_ombros_total_L_R();
-delay(1000);
-levantar_ombro_total_L() ;
-delay(1000);
-levantar_ombro_total_R() ;
-delay(1000);
-baixar_ombro_total_L();
-delay(1000);
-baixar_ombro_total_R() ;
-delay(1000);
-levanta_mao_L() ;
-delay(1000);
-levanta_mao_R();
-delay(1000);
-abaixa_mao_L() ;
-delay(1000);
-abaixa_mao_R();
-delay(1000);
-levanta_ombro_metade_L();
-delay(1000);
-levanta_ombro_metade_R();
-delay(1000);
-baixar_ombros_total_L_R();
-delay(1000);
-bye_bye_L();
-bye_bye_R();*/
+    /*
+    levantar_ombros_total_L_R() ;
+    delay(1000);
+    baixar_ombros_total_L_R();
+    delay(1000);
+    levantar_ombro_total_L() ;
+    delay(1000);
+    levantar_ombro_total_R() ;
+    delay(1000);
+    baixar_ombro_total_L();
+    delay(1000);
+    baixar_ombro_total_R() ;
+    delay(1000);
+    levanta_mao_L() ;
+    delay(1000);
+    levanta_mao_R();
+    delay(1000);
+    abaixa_mao_L() ;
+    delay(1000);
+    abaixa_mao_R();
+    delay(1000);
+    levanta_ombro_metade_L();
+    delay(1000);
+    levanta_ombro_metade_R();
+    delay(1000);
+    baixar_ombros_total_L_R();
+    delay(1000);
+    bye_bye_L();
+    bye_bye_R();
+  */
   }
+
 }
+
 /*******************MOVIMENTAÇÃO DA CABEÇA****************************************************************************/
 //Função de movimentação da cabeça
 void move_cabeca()
@@ -132,6 +137,7 @@ void move_cabeca()
   }
   delay(1000);
 }
+
 ///////////////********************CRIAÇÃO DAS FUNÇÕES DE MOVIMENTAÇÕES DOS SERVOS ********************///////////////
 /*************************LEVATAR OS DOIS BRAÇOS TOTAL**********************************************************************/
 //Função para levantar os braços esquerdo e direito
